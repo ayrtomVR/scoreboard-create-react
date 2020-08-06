@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import Player from './Player';
-import AddPlayerForm from './AppPlayerForm';
+import AddPlayerForm from './AddPlayerForm';
 
 class App extends Component {
     state = {
@@ -29,13 +29,19 @@ class App extends Component {
         ],
     };
 
-    handleScorePlayer = (index, delta) => {
-        // // incrementScore = () => {
-        // this.setState((prevState) => ({
-        //     score: (prevState.players[index].score += delta),
-        // }));
-        // // };
-        // console.log('index: ' + index, 'delta: ' + delta);
+    // player id counter
+    prevPlayerId = 4;
+
+    getHighScore = () => {
+        const scores = this.state.players.map((p) => p.score);
+        const highScore = Math.max(...scores);
+        if (highScore) {
+            return highScore;
+        }
+        return null;
+    };
+
+    handleScoreChange = (index, delta) => {
         this.setState((prevState) => {
             // New 'players' array – a copy of the previous `players` state
             const updatedPlayers = [...prevState.players];
@@ -54,16 +60,13 @@ class App extends Component {
         });
     };
 
-    // player id counter
-    prevPlayerId = 4;
-
     handleAddPlayer = (name) => {
         this.setState((prevState) => {
             return {
                 players: [
                     ...prevState.players,
                     {
-                        name: name,
+                        name,
                         score: 0,
                         id: (this.prevPlayerId += 1),
                     },
@@ -81,9 +84,11 @@ class App extends Component {
     };
 
     render() {
+        const highScore = this.getHighScore();
+
         return (
             <div className="scoreboard">
-                <Header title="Scoreboard" players={this.state.players} />
+                <Header players={this.state.players} />
 
                 {/* Players list */}
                 {this.state.players.map((player, index) => (
@@ -93,8 +98,9 @@ class App extends Component {
                         id={player.id}
                         key={player.id.toString()}
                         index={index}
-                        changeScore={this.handleScorePlayer}
+                        changeScore={this.handleScoreChange}
                         removePlayer={this.handleRemovePlayer}
+                        isHighScore={highScore === player.score}
                     />
                 ))}
 
