@@ -1,19 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Stats from './Stats';
 import Stopwatch from './Stopwatch';
 
-const Header = ({ players, title }) => {
+const Header = () => {
     return (
         <header>
-            <Stats players={players} />
-            <h1>{title}</h1>
+            <Stats />
+            <h1>Scoreboard</h1>
             {/* <span className="stats">Players: {props.totalPlayers}</span> */}
             <Stopwatch />
         </header>
     );
 };
 
+/*
 Header.propTypes = {
     title: PropTypes.string,
     players: PropTypes.arrayOf(PropTypes.object),
@@ -22,5 +23,6 @@ Header.propTypes = {
 Header.defaultProps = {
     title: 'Scoreboard',
 };
+*/
 
 export default Header;
